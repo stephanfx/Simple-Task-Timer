@@ -26,9 +26,12 @@
 			<tr ng-repeat="task in tasks track by $index | orderBy:start:true ">
 				<td>{{$index}}</td>
 				<td width="50%">{{task.name}}</td>
-				<td>{{task.start | date:"yy-mm-dd hh:mm"}}</td>
-				<td>{{task.end | date:"yy-mm-dd hh:mm"}}</td>
-				<td>{{task.total}}</td>
+				<td>{{task.start | date:"yy-MM-dd hh:mm"}}</td>
+				<td>{{task.end | date:"yy-MM-dd hh:mm"}}</td>
+				<td>
+					<span ng-hide="!task.end">{{task.total | toTime}} </span>
+					<span ng-hide="task.end">{{ timeLeft[$index] | toTime}}</span>
+				</td>
 				<td>
 					<a ng-show="!task.end" href ng-click="stopTask($index)"><span class="glyphicon glyphicon-stop"></span></a>
 					<a href ng-click="removeTask($index)"><span class="glyphicon glyphicon-remove"></span></a>
