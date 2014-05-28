@@ -10,8 +10,16 @@ angular.module('simpleTask', ['ngRoute'])
 			$scope.load = function() {
 				if (localStorage.getItem('tasks')) {
 					var tasks = JSON.parse(localStorage.getItem('tasks'));
-					console.log(tasks);
 					$scope.tasks = tasks;
+					for (var i = $scope.tasks.length - 1; i >= 0; i--) {
+						if (typeof $scope.tasks[i+1] !== 'undefined'){
+							var day = new Date($scope.tasks[i].start).toString('yyyy-MM-dd'),
+								nextDay = new Date($scope.tasks[i+1].start).toString('yyyy-MM-dd');
+							if (day !== nextDay) {
+								$scope.tasks[i].newDay = true;
+							}
+						}
+					}
 					$scope.timing();
 				}
 			};

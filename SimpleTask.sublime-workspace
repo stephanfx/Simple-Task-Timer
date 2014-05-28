@@ -547,7 +547,7 @@
 			"file": "src/index.html",
 			"settings":
 			{
-				"buffer_size": 1967,
+				"buffer_size": 2294,
 				"line_ending": "Windows"
 			}
 		},
@@ -555,7 +555,7 @@
 			"file": "src/js/app.js",
 			"settings":
 			{
-				"buffer_size": 1864,
+				"buffer_size": 2192,
 				"line_ending": "Windows"
 			}
 		}
@@ -720,6 +720,7 @@
 	},
 	"file_history":
 	[
+		"/E/Repos/TruckStore/gruntfile.js",
 		"/E/Sites/sandownnew/site/portal/js/app.js",
 		"/E/VM Discs/ubuntu_vagrant/puphpet/config.yaml",
 		"/C/Windows/System32/Drivers/etc/hosts",
@@ -846,8 +847,7 @@
 		"/E/Repos/sandown/Sql/Dev/Careers/Structure/20130117_0822_Careers.sql",
 		"/E/Repos/sandown/Source/Dev/site/admin/partials/careers-detail.html",
 		"/E/Repos/sandown/Sql/Dev/Careers/Structure/20140407_1443_Careers.sql",
-		"/E/Sites/sandownnew/api/app/controllers/NewsController.php",
-		"/E/Repos/sandown/Source/Dev/api/app/models/News.php"
+		"/E/Sites/sandownnew/api/app/controllers/NewsController.php"
 	],
 	"find":
 	{
@@ -882,6 +882,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"format",
 			", 10",
 			"duration",
 			"DealershipsCt",
@@ -1008,8 +1009,7 @@
 			"service",
 			" + response[0]['@lastInsertedID']",
 			"ID was :",
-			"ID was",
-			"ID was:"
+			"ID was"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1353,8 +1353,8 @@
 						"selection":
 						[
 							[
-								103,
-								103
+								102,
+								102
 							]
 						],
 						"settings":
@@ -1872,7 +1872,7 @@
 					"file": "src/index.html",
 					"settings":
 					{
-						"buffer_size": 1967,
+						"buffer_size": 2294,
 						"regions":
 						{
 							"mark":
@@ -1882,8 +1882,8 @@
 								"regions":
 								[
 									[
-										1510,
-										1510
+										1837,
+										1837
 									]
 								],
 								"scope": "mark"
@@ -1892,8 +1892,8 @@
 						"selection":
 						[
 							[
-								1216,
-								1216
+								1280,
+								1280
 							]
 						],
 						"settings":
@@ -2139,7 +2139,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 288.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -2149,15 +2149,15 @@
 					"file": "src/js/app.js",
 					"settings":
 					{
-						"buffer_size": 1864,
+						"buffer_size": 2192,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1125,
-								1125
+								186,
+								186
 							]
 						],
 						"settings":
@@ -2403,7 +2403,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 594.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -2722,7 +2722,7 @@
 		[
 			[
 				"",
-				"/E/Repos/sandown/Sandown New Development.sublime-project"
+				"/E/Repos/TruckStore/Truckstore New.sublime-project"
 			],
 			[
 				"cn",
