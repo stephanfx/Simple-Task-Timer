@@ -7,23 +7,34 @@
 		.day-seperator {
 			border-bottom: 2px solid;
 		}
+		.running {
+			background: #a9e554;
+		}
 	</style>
 </head>
 <body ng-controller="TaskCtrl" ng-init="load()">
 	<div class="container">
-		<form action method="POST" class="form-horizontal" role="form" novalidate>
-				<div class="form-group">
-					<legend>Simple Task</legend>
+		<div class="page-header">
+					<h2>Simple Task</h2>
 				</div>
+		<form action method="POST" name="taskForm" class="form-inline" role="form" novalidate>
+
 				<div class="form-group">
-					<label for="inputTaskName" class="col-sm-2 control-label">Task Name:</label>
-					<div class="col-sm-10">
-						<input type="text" name="taskName" id="inputTaskName" ng-model="task.name" class="form-control" required="required">
+					<label for="inputTaskName" class="sr-only">Task Name:</label>
+					<div class="">
+						<input type="text" name="taskName" id="inputTaskName" ng-model="task.name" class="form-control" placeholder="Task Description" required="required">
 					</div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-10 col-sm-offset-2">
-						<button ng-click="createTask()" class="btn btn-primary">Submit</button>
+					<label for="inputEstimatedTime" class="sr-only">Estimated Time:</label>
+					<div class="">
+						<input type="text" name="EstimatedTime" id="inputEstimatedTime" ng-model="task.estimate" class="form-control" placeholder="Estimated time" required="required">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="">
+						<button ng-click="createTask(task)" ng-disabled="!taskForm.$valid" class="btn btn-primary">Submit</button>
 					</div>
 				</div>
 		</form>
@@ -32,24 +43,25 @@
 				<tr>
 					<th>Index</th>
 					<th>Description</th>
-					<th>Start</th>
-					<th>End</th>
+					<th>Time Entries</th>
+					<th>Estimated Time</th>
 					<th>Total/Duration</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="task in tasks track by $index | orderBy:start:true " ng-class="{'day-seperator': task.newDay}">
+				<tr ng-repeat="task in tasks track by $index | orderBy:start:true" ng-class="{'day-seperator': task.newDay, 'running': task.running}" >
 					<td>{{$index}}</td>
-					<td width="45%">{{task.name}}</td>
-					<td>{{task.start | date:"yy-MM-dd hh:mm"}}</td>
-					<td>{{task.end | date:"yy-MM-dd hh:mm"}}</td>
+					<td width="45%" ng-class="{}">{{task.name}}</td>
+					<td>{{task.times.length}}</td>
+					<td>{{task.estimate}}</td>
 					<td>
-						<span ng-hide="!task.end">{{task.total | toTime}} </span>
-						<span ng-hide="task.end">{{ timeLeft[$index] | toTime}}</span>
+						<span ng-hide="!task.total">{{task.total | toTime}} </span>
+						<span ng-hide="!task.total">{{ timeLeft[$index] | toTime}}</span>
 					</td>
 					<td>
-						<a ng-show="!task.end" href ng-click="stopTask($index)"><span class="glyphicon glyphicon-stop"></span></a>
+						<a ng-show="!task.running" href ng-click="startTask($index)"><span class="glyphicon glyphicon-play"></span></a>
+						<a ng-show="task.running" href ng-click="stopTask($index)"><span class="glyphicon glyphicon-stop"></span></a>
 						<a href ng-click="removeTask($index)"><span class="glyphicon glyphicon-remove"></span></a>
 					</td>
 				</tr>

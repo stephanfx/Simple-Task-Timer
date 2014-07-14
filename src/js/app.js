@@ -4,69 +4,38 @@ angular.module('simpleTask', ['ngRoute'])
 
 		}
 	])
-	.controller('TaskCtrl', ['$scope', '$timeout',
-		function($scope, $timeout) {
-			$scope.tasks = [];
-			$scope.load = function() {
-				if (localStorage.getItem('tasks')) {
-					var tasks = JSON.parse(localStorage.getItem('tasks'));
-					$scope.tasks = tasks;
-					for (var i = $scope.tasks.length - 1; i >= 0; i--) {
-						if (typeof $scope.tasks[i+1] !== 'undefined'){
-							var day = new Date($scope.tasks[i].start).toString('yyyy-MM-dd'),
-								nextDay = new Date($scope.tasks[i+1].start).toString('yyyy-MM-dd');
-							if (day !== nextDay) {
-								$scope.tasks[i].newDay = true;
-							}
-						}
-					}
-					$scope.timing();
-				}
-			};
-			$scope.persist = function() {
-				if (Storage) {
-					localStorage.setItem('tasks', JSON.stringify($scope.tasks));
-				}
-			};
-			$scope.createTask = function() {
-				var start = Date.now();
-				$scope.tasks.unshift({
-					"name": $scope.task.name,
-					"start": start
-				});
-				$scope.persist();
+	.controller('TaskCtrl', ['$scope', 'Tasks',
+		function($scope, Tasks) {
+			Tasks.load();
+			console.log(Tasks);
+			$scope.tasks = Tasks.tasks;
+			$scope.createTask = function(task) {
+				Tasks.createTask(task);
 				$scope.task = null;
 			};
-
-			$scope.removeTask = function(index) {
-				$scope.tasks.splice(index, 1);
-				$scope.persist();
+			$scope.startTask = function(index) {
+				Tasks.startTask(index);
 			};
-
-			$scope.timeLeft = [];
-
-			$scope.timing = function(){
-				$timeout(function(){
+			$scope.stopTask = function(index){
+				Tasks.stopTask(index);
+			};
+			$scope.removeTask = function(index){
+				Tasks.removeTask(index);
+			};
+			timing = function() {
+				$timeout(function() {
 					var now = Date.now();
-					for (var i = $scope.tasks.length - 1; i >= 0; i--) {
-						$scope.timeLeft[i] = now - $scope.tasks[i].start;
+					for (var i = tasks.length - 1; i >= 0; i--) {
+						timeLeft[i] = now - tasks[i].start;
 					}
-					$scope.timing();
-				},1000);
-			};
-
-
-			$scope.stopTask = function(index) {
-				var task = $scope.tasks[index];
-				task.end = Date.now();
-				task.total = task.end - task.start;
-				$scope.persist();
+					timing();
+				}, 1000);
 			};
 		}
 	])
 	.filter('toTime', function() {
 		return function(input) {
-			if (typeof input !== "undefined"){
+			if (typeof input !== "undefined") {
 				var milliseconds = parseInt((input % 1000) / 100, 10),
 					seconds = parseInt((input / 1000) % 60, 10),
 					minutes = parseInt((input / (1000 * 60)) % 60, 10),
@@ -79,4 +48,78 @@ angular.module('simpleTask', ['ngRoute'])
 				return hours + ":" + minutes + ":" + seconds;
 			}
 		};
-	});
+	}).
+factory('Tasks', function() {
+	return {
+		tasks: [],
+		timeLeft: [],
+		load: function() {
+			if (localStorage.getItem('tasks')) {
+				var storedtasks = JSON.parse(localStorage.getItem('tasks'));
+				tasks = this.tasks = storedtasks;
+				for (var i = tasks.length - 1; i >= 0; i--) {
+					if (typeof tasks[i + 1] !== 'undefined') {
+						var day = new Date(tasks[i].start).toString('yyyy-MM-dd'),
+							nextDay = new Date(tasks[i + 1].start).toString('yyyy-MM-dd');
+						if (day !== nextDay) {
+							tasks[i].newDay = true;
+						}
+					}
+				}
+			}
+		},
+		persist: function() {
+			if (Storage) {
+				localStorage.setItem('tasks', JSON.stringify(tasks));
+			}
+		},
+		createTask: function(task) {
+			tasks.unshift({
+				"name": task.name,
+				"estimate": task.estimate,
+				"times": []
+			});
+			this.persist();
+			task = null;
+		},
+
+		startTask : function(index) {
+			var start = Date.now();
+			tasks[index].times.push({
+				"start": start,
+				"end" : null
+			});
+			tasks[index].running = true;
+			this.persist();
+		},
+
+		removeTask: function(index) {
+			tasks.splice(index, 1);
+			this.persist();
+		},
+
+		stopTask: function(index) {
+			var task = tasks[index],
+				timeToStop = task.times.length - 1;
+			task.running = false;
+			task.times[timeToStop].end = Date.now();
+			this.calculateTime(index);
+			this.persist();
+		},
+		calculateTime: function(index){
+			var task = tasks[index];
+			task.total = 0;
+			for (var x = task.times.length - 1; x >= 0; x--) {
+				task.total += task.times[x].end - task.times[x].start;
+			}
+		},
+
+	};
+})
+	.factory('test', ['test',
+		function(test) {
+			return function name() {
+
+			};
+		}
+	]);
