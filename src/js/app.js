@@ -22,6 +22,9 @@ angular.module('simpleTask', ['ngRoute'])
 			$scope.removeTask = function(index){
 				Tasks.removeTask(index);
 			};
+			$scope.archiveTask = function(index) {
+				Tasks.archiveTask(index);
+			};
 			timing = function() {
 				$timeout(function() {
 					var now = Date.now();
@@ -44,7 +47,6 @@ angular.module('simpleTask', ['ngRoute'])
 				hours = (hours < 10) ? "0" + hours : hours;
 				minutes = (minutes < 10) ? "0" + minutes : minutes;
 				seconds = (seconds < 10) ? "0" + seconds : seconds;
-
 				return hours + ":" + minutes + ":" + seconds;
 			}
 		};
@@ -98,6 +100,10 @@ factory('Tasks', function() {
 			this.persist();
 		},
 
+		archiveTask: function(index) {
+			tasks[index].archived = true;
+			this.persist();
+		},
 		stopTask: function(index) {
 			var task = tasks[index],
 				timeToStop = task.times.length - 1;
@@ -113,6 +119,9 @@ factory('Tasks', function() {
 				task.total += task.times[x].end - task.times[x].start;
 			}
 		},
+		getDailyTimes: function() {
+
+		}
 
 	};
 })

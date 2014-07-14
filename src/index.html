@@ -55,7 +55,7 @@
 				</div>
 		</form>
 		<ul class="list-unstyled">
-			<li ng-repeat="task in tasks track by $index | orderBy:start:true" ng-class="{'day-seperator': task.newDay, 'running': task.running}" >
+			<li ng-repeat="task in tasks track by $index" ng-hide="task.archived" ng-class="{'day-seperator': task.newDay, 'running': task.running}" >
 				<div class="row">
 					<div class="col-xs-12 col-sm-9">
 					<div width="45%"><h3>{{task.name}}&nbsp;<span class="small" ng-hide="!task.total">{{task.total | toTime}} </span></h3></div>
@@ -68,7 +68,7 @@
 					<div class="col-xs-12 col-sm-3 text-center">
 						<a class="action" ng-show="!task.running" href ng-click="startTask($index)"><span class="glyphicon glyphicon-play"></span></a>
 						<a class="action" ng-show="task.running" href ng-click="stopTask($index)"><span class="glyphicon glyphicon-stop"></span></a>
-						<a class="action" href ng-click="removeTask($index)"><span class="glyphicon glyphicon-remove"></span></a>
+						<a class="action" href ng-click="archiveTask($index)"><span class="glyphicon glyphicon-save"></span></a>
 					</div>
 				</div>
 				<div class="row" ng-show="displayTimes">
