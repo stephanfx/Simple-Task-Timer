@@ -3,7 +3,7 @@
 	<meta charset="UTF-8">
 	<title>Simple Task</title>
 	<link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.css">
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
 	<style>
 		body {
@@ -23,18 +23,27 @@
 			font-size: 28px;
 			padding: 20px;
 			border-radius: 200px;
-			border: 1px solid #eee;
+			border: 1px solid #ccc;
 			margin: 20px 5px;
+		}
+		.running .action{
+			border: 1px solid #eee;
+
 		}
 	</style>
 </head>
 <body ng-controller="TaskCtrl" ng-init="load()">
 	<div class="container">
+		<div class="pull-right">
+				<a class="action" href ng-hide="breakTime" ng-click="startBreak()"><span class="glyphicon glyphicon-cutlery"></span></a>
+				<a class="action" href ng-hide="!breakTime" ng-class="{'running': breakTime}" ng-click="stopBreak()"><span class="glyphicon glyphicon-cutlery"></span></a>
+			</div>
 		<div class="page-header">
-					<h1>Simple Task</h1>
-				</div>
-		<form action method="POST" name="taskForm" class="form-inline" role="form" novalidate>
+			<h1>Simple Task</h1>
 
+		</div>
+
+		<form action method="POST" name="taskForm" class="form-inline" role="form" novalidate>
 				<div class="form-group">
 					<label for="inputTaskName" class="sr-only">Task Name:</label>
 					<div class="">
@@ -58,11 +67,16 @@
 			<li ng-repeat="task in tasks track by $index" ng-hide="task.archived" ng-class="{'day-seperator': task.newDay, 'running': task.running}" >
 				<div class="row">
 					<div class="col-xs-12 col-sm-9">
-					<div width="45%"><h3>{{task.name}}&nbsp;<span class="small" ng-hide="!task.total">{{task.total | toTime}} </span></h3></div>
+					<div width="45%">
+						<h3>{{task.name}}&nbsp;
+							<span class="small" ng-hide="task.running">{{task.total | toTime}} </span>
+							<span class="small" ng-show="task.running">{{ task.runningTime | toTime}}</span>
+						</h3>
+					</div>
 					<div><a href ng-click="displayTimes = !displayTimes">{{task.times.length}} time entries</a></div>
 					<div>{{task.estimate}} hrs estimated</div>
 					<div>
-						<span ng-hide="!task.total">{{ timeLeft[$index] | toTime}}</span>
+
 					</div>
 					</div>
 					<div class="col-xs-12 col-sm-3 text-center">
@@ -73,6 +87,7 @@
 				</div>
 				<div class="row" ng-show="displayTimes">
 					<div class="col-xs-12">
+						{{task.times}}
 						<ul class="list-unstyled">
 							<li ng-repeat="time in task.times track by $index">
 								Time Started: {{time.start | date:"yyyy-MM-dd HH:mm:ss"}} |
@@ -89,7 +104,7 @@
 	<script src="/vendor/angular-route/angular-route.js"></script>
 	<script type="text/javascript" src="/vendor/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="/vendor/bootstrap/dist/js/bootstrap.js"></script>
-	<script type="text/javascript" src="/vendor/datejs/build/date.js"></script>
+	<script type="text/javascript" src="/vendor/moment/moment.js"></script>
 	<script type="text/javascript" src="/src/js/app.js"></script>
 
 </body>

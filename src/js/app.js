@@ -4,10 +4,10 @@ angular.module('simpleTask', ['ngRoute'])
 
 		}
 	])
-	.controller('TaskCtrl', ['$scope', 'Tasks',
-		function($scope, Tasks) {
+	.controller('TaskCtrl', ['$scope', 'Tasks', '$interval',
+		function($scope, Tasks, $interval) {
 			Tasks.load();
-			console.log(Tasks);
+
 			$scope.tasks = Tasks.tasks;
 			$scope.createTask = function(task) {
 				Tasks.createTask(task);
@@ -15,9 +15,13 @@ angular.module('simpleTask', ['ngRoute'])
 			};
 			$scope.startTask = function(index) {
 				Tasks.startTask(index);
+				$scope.interval = $interval(function() {
+					Tasks.runningTime(index);
+				}, 1000);
 			};
 			$scope.stopTask = function(index){
 				Tasks.stopTask(index);
+				$interval.cancel($scope.interval);
 			};
 			$scope.removeTask = function(index){
 				Tasks.removeTask(index);
@@ -25,29 +29,23 @@ angular.module('simpleTask', ['ngRoute'])
 			$scope.archiveTask = function(index) {
 				Tasks.archiveTask(index);
 			};
-			timing = function() {
-				$timeout(function() {
-					var now = Date.now();
-					for (var i = tasks.length - 1; i >= 0; i--) {
-						timeLeft[i] = now - tasks[i].start;
-					}
-					timing();
-				}, 1000);
+			$scope.startBreak = function(){
+				Tasks.createTask({name: "Break", estimate: 0}, 'break');
+				Tasks.startTask(0);
+				Tasks.archiveTask(0);
+				$scope.breakTime = true;
 			};
+			$scope.stopBreak = function(){
+				Tasks.stopTask(0);
+				$scope.breakTime = false;
+			}
 		}
 	])
 	.filter('toTime', function() {
 		return function(input) {
 			if (typeof input !== "undefined") {
-				var milliseconds = parseInt((input % 1000) / 100, 10),
-					seconds = parseInt((input / 1000) % 60, 10),
-					minutes = parseInt((input / (1000 * 60)) % 60, 10),
-					hours = parseInt((input / (1000 * 60 * 60)) % 24, 10);
-
-				hours = (hours < 10) ? "0" + hours : hours;
-				minutes = (minutes < 10) ? "0" + minutes : minutes;
-				seconds = (seconds < 10) ? "0" + seconds : seconds;
-				return hours + ":" + minutes + ":" + seconds;
+				var m = moment.duration(input);
+				return m.get('h') + ":"+ m.get('m') +":"+ m.get('s');
 			}
 		};
 	}).
@@ -72,51 +70,73 @@ factory('Tasks', function() {
 		},
 		persist: function() {
 			if (Storage) {
-				localStorage.setItem('tasks', JSON.stringify(tasks));
+				localStorage.setItem('tasks', JSON.stringify(this.tasks));
 			}
 		},
-		createTask: function(task) {
-			tasks.unshift({
+		createTask: function(task, type) {
+			if (typeof type == "undefined") {
+				type = 'work';
+			}
+			this.tasks.unshift({
 				"name": task.name,
 				"estimate": task.estimate,
-				"times": []
+				"type": type,
+				"times": [],
+				"total": 0
 			});
 			this.persist();
-			task = null;
 		},
-
 		startTask : function(index) {
-			var start = Date.now();
-			tasks[index].times.push({
+			var start = moment().valueOf();
+			this.tasks[index].times.push({
 				"start": start,
 				"end" : null
 			});
-			tasks[index].running = true;
+			this.tasks[index].running = true;
 			this.persist();
 		},
-
+		runningTime: function(index){
+			var task = this.tasks[index],
+				latest = task.times.length - 1;
+			task.runningTime = (moment().valueOf() - task.times[latest].start) + task.total;
+		},
 		removeTask: function(index) {
-			tasks.splice(index, 1);
+			this.tasks.splice(index, 1);
 			this.persist();
 		},
 
 		archiveTask: function(index) {
-			tasks[index].archived = true;
+			this.tasks[index].archived = true;
 			this.persist();
 		},
 		stopTask: function(index) {
-			var task = tasks[index],
+			var task = this.tasks[index],
 				timeToStop = task.times.length - 1;
 			task.running = false;
-			task.times[timeToStop].end = Date.now();
+			task.times[timeToStop].end = moment().valueOf();
 			this.calculateTime(index);
 			this.persist();
 		},
+
 		calculateTime: function(index){
-			var task = tasks[index];
+			var task = this.tasks[index];
 			task.total = 0;
 			for (var x = task.times.length - 1; x >= 0; x--) {
-				task.total += task.times[x].end - task.times[x].start;
+				task.times[x].total = task.times[x].end - task.times[x].start;
+				task.total += task.times[x].total;
+			}
+		},
+		getWorkTimes: function(){
+			var workHrs = {};
+			for (var x = this.tasks.length - 1; x >= 0; x--) {
+				var task = this.tasks[x];
+				if (task.type == "work") {
+					// get days worked on
+					for (var i = task.times.length - 1; i >= 0; i--) {
+						var date = new Date(task.times[i].start);
+					};
+					var date = new Date()
+				}
 			}
 		},
 		getDailyTimes: function() {
