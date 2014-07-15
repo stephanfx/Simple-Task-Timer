@@ -18,10 +18,12 @@ angular.module('simpleTask', ['ngRoute'])
 				$scope.interval = $interval(function() {
 					Tasks.runningTime(index);
 				}, 1000);
+				$scope.getWorkTimes();
 			};
 			$scope.stopTask = function(index){
 				Tasks.stopTask(index);
 				$interval.cancel($scope.interval);
+				$scope.getWorkTimes();
 			};
 			$scope.removeTask = function(index){
 				Tasks.removeTask(index);
@@ -34,18 +36,32 @@ angular.module('simpleTask', ['ngRoute'])
 				Tasks.startTask(0);
 				Tasks.archiveTask(0);
 				$scope.breakTime = true;
+				$scope.getWorkTimes();
 			};
 			$scope.stopBreak = function(){
 				Tasks.stopTask(0);
 				$scope.breakTime = false;
-			}
+				$scope.getWorkTimes();
+			};
+			$scope.getWorkTimes = function(){
+				var times = Tasks.getWorkTimes();
+				$scope.worktimes = times[moment().format('YYYY-MM-DD')];
+			};
 		}
 	])
 	.filter('toTime', function() {
 		return function(input) {
 			if (typeof input !== "undefined") {
-				var m = moment.duration(input);
-				return m.get('h') + ":"+ m.get('m') +":"+ m.get('s');
+				var m = moment.duration(input),
+					min = m.get('m'),
+					sec = m.get('s');
+				if (min < 10) {
+					min = "0" + min;
+				}
+				if (sec < 10) {
+					sec = "0" + sec;
+				}
+				return m.get('h') + ":"+ min +":"+ sec;
 			}
 		};
 	}).
@@ -115,6 +131,7 @@ factory('Tasks', function() {
 			task.running = false;
 			task.times[timeToStop].end = moment().valueOf();
 			this.calculateTime(index);
+
 			this.persist();
 		},
 
@@ -130,14 +147,30 @@ factory('Tasks', function() {
 			var workHrs = {};
 			for (var x = this.tasks.length - 1; x >= 0; x--) {
 				var task = this.tasks[x];
-				if (task.type == "work") {
-					// get days worked on
+				// get days worked on
+				if (typeof task.times == "undefined") {
+					continue;
+				} else {
 					for (var i = task.times.length - 1; i >= 0; i--) {
-						var date = new Date(task.times[i].start);
-					};
-					var date = new Date()
+						var sdate = moment(task.times[i].start),
+							edate = moment(task.times[i].end),
+							dayFormat = sdate.format('YYYY-MM-DD');
+						if (typeof workHrs[dayFormat] == "undefined") {
+							workHrs[dayFormat] = {"work":0, "breaktime":0};
+						}
+						if (task.times[i].end !== null && task.type == "work") {
+							var total = edate.valueOf() - sdate.valueOf();
+							workHrs[dayFormat].work += total;
+						}
+						if (task.times[i].end !== null && task.type == "break") {
+							var breaktotal = edate.valueOf() - sdate.valueOf();
+							workHrs[dayFormat].breaktime += breaktotal;
+						}
+					}
 				}
+
 			}
+			return workHrs;
 		},
 		getDailyTimes: function() {
 
