@@ -48,7 +48,10 @@ angular.module('simpleTask', ['ngRoute'])
 				$scope.worktimes = times[moment().format('YYYY-MM-DD')];
 			};
 		}
-	])
+	]).
+	controller('ReportCtrl', ['$scope', 'Tasks', function($scope, Tasks){
+
+	}])
 	.filter('toTime', function() {
 		return function(input) {
 			if (typeof input !== "undefined") {
@@ -74,6 +77,7 @@ factory('Tasks', function() {
 				var storedtasks = JSON.parse(localStorage.getItem('tasks'));
 				tasks = this.tasks = storedtasks;
 				for (var i = tasks.length - 1; i >= 0; i--) {
+
 					if (typeof tasks[i + 1] !== 'undefined') {
 						var day = new Date(tasks[i].start).toString('yyyy-MM-dd'),
 							nextDay = new Date(tasks[i + 1].start).toString('yyyy-MM-dd');
@@ -89,6 +93,22 @@ factory('Tasks', function() {
 				localStorage.setItem('tasks', JSON.stringify(this.tasks));
 			}
 		},
+		fixTimes : function(task){
+			if (typeof task.times == "undefined"){
+				task.times = [];
+				var time = {
+					start: task.start,
+					end: task.end
+				};
+				task.times.push(time);
+				delete task.start;
+				delete task.end;
+			}
+			if (typeof task.type == "undefined") {
+				task.type = "work";
+			}
+			return task;
+		},
 		createTask: function(task, type) {
 			if (typeof type == "undefined") {
 				type = 'work';
@@ -98,7 +118,8 @@ factory('Tasks', function() {
 				"estimate": task.estimate,
 				"type": type,
 				"times": [],
-				"total": 0
+				"total": 0,
+				"running": false
 			});
 			this.persist();
 		},
