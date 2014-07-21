@@ -1,0 +1,37 @@
+<div class="pull-right">
+	<a class="action" href ng-hide="breakTime" ng-click="startBreak()"><span class="glyphicon glyphicon-cutlery"></span></a>
+	<a class="action" href ng-hide="!breakTime" ng-class="{'running': breakTime}" ng-click="stopBreak()"><span class="glyphicon glyphicon-cutlery"></span></a>
+</div>
+<div class="page-header">
+
+	<h1><a href ng-click="settings = !settings">		<span class="glyphicon glyphicon-cog"></span></a>Simple Task Timer</h1>
+
+</div>
+<div ng-show="settings">
+	<a href ng-click="getWorkTimes()">GetTimes</a>
+	Worked: {{worktimes.work | toTime}}
+	Breaks: {{worktimes.breaktime | toTime}}
+	<a href="#/report">Report</a>
+	<a href="#/">Tasks</a>
+</div>
+
+<form action method="POST" name="taskForm" class="form-inline" role="form" novalidate>
+	<div class="form-group">
+		<label for="inputTaskName" class="sr-only">Task Name:</label>
+		<div class="">
+			<input type="text" name="taskName" id="inputTaskName" ng-model="task.name" class="form-control" placeholder="Task Description" required="required">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="inputEstimatedTime" class="sr-only">Estimated Time:</label>
+		<div class="">
+			<input type="text" name="EstimatedTime" id="inputEstimatedTime" ng-model="task.estimate" class="form-control" placeholder="Estimated time" required="required">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="">
+			<button ng-click="createTask(task)" ng-disabled="!taskForm.$valid" class="btn btn-primary">Submit</button>
+		</div>
+	</div>
+</form>

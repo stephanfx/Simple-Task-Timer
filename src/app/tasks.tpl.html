@@ -1,0 +1,34 @@
+<ul class="list-unstyled">
+	<li ng-repeat="task in tasks track by $index" ng-hide="task.archived" ng-class="{'day-seperator': task.newDay, 'running': task.running}" >
+		<div class="row">
+			<div class="col-xs-12 col-sm-8">
+				<div style="padding: 4px 10px">
+					<div>
+						<h3>{{task.name}}&nbsp;
+							<span class="small" ng-hide="task.running">{{task.total | toTime}} </span>
+							<span class="small" ng-show="task.running">{{ task.runningTime | toTime}}</span>
+						</h3>
+					</div>
+					<div><a href ng-click="displayTimes = !displayTimes">{{task.times.length}} time entries</a></div>
+					<div>{{task.estimate}} hrs estimated {{task.type}}</div>
+
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-4 text-center">
+				<a class="action" ng-show="!task.running" href ng-click="startTask($index)"><span class="glyphicon glyphicon-play"></span></a>
+				<a class="action" ng-show="task.running" href ng-click="stopTask($index)"><span class="glyphicon glyphicon-stop"></span></a>
+				<a class="action" href ng-click="archiveTask($index)"><span class="glyphicon glyphicon-ok"></span></a>
+			</div>
+		</div>
+		<div class="row" ng-show="displayTimes">
+			<div class="col-xs-12">
+				<ul class="list-unstyled">
+					<li ng-repeat="time in task.times track by $index">
+						Time Started: {{time.start | date:"yyyy-MM-dd HH:mm:ss"}} |
+						Time Ended: {{time.end | date:"yyyy-MM-dd HH:mm:ss"}} <br>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</li>
+</ul>

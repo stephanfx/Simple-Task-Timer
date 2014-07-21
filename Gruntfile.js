@@ -87,7 +87,7 @@ module.exports = function(grunt) {
 		},
 		html2js: {
 			main: {
-				src: ['src/views/**/*.html'],
+				src: ['src/**/*.tpl.html'],
 				dest: '<%= pubDir %>/static/templates.js'
 			}
 		},
@@ -137,7 +137,7 @@ module.exports = function(grunt) {
 		jshint: {
 			files: [
 				'Gruntfile.js',
-				'src/js/*.js',
+				'src/**/*.js',
 			],
 			options: {
 				globals: {

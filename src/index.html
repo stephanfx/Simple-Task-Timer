@@ -36,81 +36,19 @@
 	}
 	</style>
 </head>
-<body ng-controller="TaskCtrl" ng-init="load()">
+<body ng-init="load()">
 	<div class="container">
-		<div class="pull-right">
-			<a class="action" href ng-hide="breakTime" ng-click="startBreak()"><span class="glyphicon glyphicon-cutlery"></span></a>
-			<a class="action" href ng-hide="!breakTime" ng-class="{'running': breakTime}" ng-click="stopBreak()"><span class="glyphicon glyphicon-cutlery"></span></a>
-		</div>
-		<div class="page-header">
 
-			<h1><a href ng-click="settings = !settings">		<span class="glyphicon glyphicon-cog"></span></a>Simple Task Timer</h1>
+		<div ng-controller="TaskCtrl" ng-include="'app/header.tpl.html'"></div>
+		<div ng-view></div>
 
-		</div>
-		<a href ng-click="getWorkTimes()">GetTimes</a>
-		Worked: {{worktimes.work | toTime}}
-		Breaks: {{worktimes.breaktime | toTime}}
-		<form action method="POST" name="taskForm" class="form-inline" role="form" novalidate>
-			<div class="form-group">
-				<label for="inputTaskName" class="sr-only">Task Name:</label>
-				<div class="">
-					<input type="text" name="taskName" id="inputTaskName" ng-model="task.name" class="form-control" placeholder="Task Description" required="required">
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="inputEstimatedTime" class="sr-only">Estimated Time:</label>
-				<div class="">
-					<input type="text" name="EstimatedTime" id="inputEstimatedTime" ng-model="task.estimate" class="form-control" placeholder="Estimated time" required="required">
-				</div>
-			</div>
-
-			<div class="form-group">
-				<div class="">
-					<button ng-click="createTask(task)" ng-disabled="!taskForm.$valid" class="btn btn-primary">Submit</button>
-				</div>
-			</div>
-		</form>
-
-		<ul class="list-unstyled">
-			<li ng-repeat="task in tasks track by $index" ng-hide="task.archived" ng-class="{'day-seperator': task.newDay, 'running': task.running}" >
-				<div class="row">
-					<div class="col-xs-12 col-sm-8">
-						<div style="padding: 4px 10px">
-							<div>
-								<h3>{{task.name}}&nbsp;
-									<span class="small" ng-hide="task.running">{{task.total | toTime}} </span>
-									<span class="small" ng-show="task.running">{{ task.runningTime | toTime}}</span>
-								</h3>
-							</div>
-							<div><a href ng-click="displayTimes = !displayTimes">{{task.times.length}} time entries</a></div>
-							<div>{{task.estimate}} hrs estimated {{task.type}}</div>
-
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-4 text-center">
-						<a class="action" ng-show="!task.running" href ng-click="startTask($index)"><span class="glyphicon glyphicon-play"></span></a>
-						<a class="action" ng-show="task.running" href ng-click="stopTask($index)"><span class="glyphicon glyphicon-stop"></span></a>
-						<a class="action" href ng-click="archiveTask($index)"><span class="glyphicon glyphicon-ok"></span></a>
-					</div>
-				</div>
-				<div class="row" ng-show="displayTimes">
-					<div class="col-xs-12">
-						<ul class="list-unstyled">
-							<li ng-repeat="time in task.times track by $index">
-								Time Started: {{time.start | date:"yyyy-MM-dd HH:mm:ss"}} |
-								Time Ended: {{time.end | date:"yyyy-MM-dd HH:mm:ss"}} <br>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</li>
-		</ul>
 
 	</div>
 	<script type="text/javascript" src="static/angular.js"></script>
 	<script type="text/javascript" src="static/jquery.js"></script>
 	<script type="text/javascript" src="static/bootstrap.js"></script>
 	<script type="text/javascript" src="static/simpleTask.js"></script>
+	<script type="text/javascript" src="static/templates.js"></script>
 
 </body>
 </html>

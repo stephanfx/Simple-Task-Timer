@@ -1,7 +1,8 @@
-angular.module('simpleTask', ['ngRoute'])
+angular.module('simpleTask', ['ngRoute','Reporting', 'templates-main'])
 	.config(['$routeProvider',
 		function($routeProvider) {
-
+			$routeProvider.when('/',{ controller: 'TaskCtrl', templateUrl: 'app/tasks.tpl.html'})
+			.otherwise('/');
 		}
 	])
 	.controller('TaskCtrl', ['$scope', 'Tasks', '$interval',
@@ -48,10 +49,7 @@ angular.module('simpleTask', ['ngRoute'])
 				$scope.worktimes = times[moment().format('YYYY-MM-DD')];
 			};
 		}
-	]).
-	controller('ReportCtrl', ['$scope', 'Tasks', function($scope, Tasks){
-
-	}])
+	])
 	.filter('toTime', function() {
 		return function(input) {
 			if (typeof input !== "undefined") {
@@ -67,7 +65,9 @@ angular.module('simpleTask', ['ngRoute'])
 				return m.get('h') + ":"+ min +":"+ sec;
 			}
 		};
-	}).
+	});
+
+angular.module('Tasks',[]).
 factory('Tasks', function() {
 	return {
 		tasks: [],
@@ -194,15 +194,22 @@ factory('Tasks', function() {
 			return workHrs;
 		},
 		getDailyTimes: function() {
+			var report = {};
+			//Step through all tasks
+			for (var i = this.tasks.length - 1; i >= 0; i--) {
+				// Step through all times logged for the task
+				var task = this.tasks[i];
+				for (var j = task.times.length - 1; j >= 0; j--) {
+					var time = task.times[j];
+					// determine date and see if it is in the report array
 
+					// check to see if task name is in date array
+
+					// add task name and time to array
+
+				}
+			}
 		}
 
 	};
-})
-	.factory('test', ['test',
-		function(test) {
-			return function name() {
-
-			};
-		}
-	]);
+});
