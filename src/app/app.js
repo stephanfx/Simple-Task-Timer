@@ -1,7 +1,9 @@
 angular.module('simpleTask', ['ngRoute','Reporting', 'templates-main'])
 	.config(['$routeProvider',
 		function($routeProvider) {
-			$routeProvider.when('/',{ controller: 'TaskCtrl', templateUrl: 'app/tasks.tpl.html'})
+			$routeProvider
+			.when('/',{ controller: 'TaskCtrl', templateUrl: 'app/tasks.tpl.html'})
+			.when('/report', {controller: 'ReportingCtrl', templateUrl: 'app/report/report.tpl.html'})
 			.otherwise('/');
 		}
 	])
@@ -202,13 +204,23 @@ factory('Tasks', function() {
 				for (var j = task.times.length - 1; j >= 0; j--) {
 					var time = task.times[j];
 					// determine date and see if it is in the report array
+					var startTime = moment(time.start),
+						endTime = moment(time.end),
+						startTimeStr = startTime.format('YYYY-MM-DD');
+					// add date to report if it is not there yet.
+					if (!report.hasOwnProperty(startTimeStr)) {
+						report[startTimeStr] = {};
+					}
+					// add task if not there yet. with a total of 0
+					if (!report[startTimeStr][task.name]){
+						report[startTimeStr][task.name]={total: 0};
+					}
 
-					// check to see if task name is in date array
-
-					// add task name and time to array
-
+					timespent = time.end - time.start;
+					report[startTimeStr][task.name].total = report[startTimeStr][task.name].total + timespent;
 				}
 			}
+			return report;
 		}
 
 	};

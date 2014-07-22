@@ -1,0 +1,13 @@
+<h1>Reporting</h1>
+<ul class="list-unstyled">
+	<li ng-repeat="(key, result) in results | orderBy:-key">
+		<div class="page-header">
+		  <h3>{{key}}</h3>
+		</div>
+		<ul class="list-unstyled">
+			<li ng-repeat="(task, time) in result">
+				 {{time.total | toTime}} - {{task}}
+			</li>
+		</ul>
+	</li>
+</ul>

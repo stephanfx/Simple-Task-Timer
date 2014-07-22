@@ -5,5 +5,5 @@
 */
 angular.module('Reporting', ['Tasks']).
 controller('ReportingCtrl', ['$scope', 'Tasks', function($scope, Tasks){
-
+	$scope.results = Tasks.getDailyTimes();
 }]);
