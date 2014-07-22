@@ -1,0 +1,63 @@
+<html ng-app="simpleTask">
+<head>
+	<meta charset="UTF-8">
+
+    <meta name="format-detection" content="telephone=no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+	<title>Simple Task</title>
+	<link rel="stylesheet" href="static/css/vendor.css">
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+	<style>
+	body {
+		font-family: 'Roboto', sans-serif;
+	}
+	h1 {
+		font-family: 'Lobster', cursive;
+	}
+	h3 {
+		margin-top: 10px;
+	}
+	.day-seperator {
+		border-bottom: 2px solid;
+	}
+	.running {
+		background: #a9e554;
+	}
+	.action{
+		display: inline-block;
+		font-size: 28px;
+		padding: 20px;
+		border-radius: 200px;
+		border: 1px solid #ccc;
+		margin: 20px 5px;
+	}
+	.running .action{
+		border: 1px solid #eee;
+
+	}
+	</style>
+</head>
+<body ng-init="load()">
+	<div class="container">
+
+		<div ng-controller="TaskCtrl" ng-include="'app/header.tpl.html'"></div>
+		<div ng-view></div>
+
+
+	</div>
+	<script type="text/javascript" src="static/angular.js"></script>
+	<script type="text/javascript" src="static/jquery.js"></script>
+	<script type="text/javascript" src="static/bootstrap.js"></script>
+	<script type="text/javascript" src="static/simpleTask.js"></script>
+	<script type="text/javascript" src="static/templates.js"></script>
+    <script type="text/javascript" src="phonegap.js"></script>
+
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+
+</body>
+</html>
