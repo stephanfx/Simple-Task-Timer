@@ -1,13 +1,9 @@
+# Simple Task Timer #
 
-# README #
+### What is this for? ###
 
-
-
-### What is this repository for? ###
-
-* Small task is exactly that, a small task page that tracks how long you spent on a task.
-* 0.0.1
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Simple task timer is exactly that, a small task page that tracks how long you spent on a task.
+* 0.0.3
 
 ### How do I get set up? ###
 
@@ -26,11 +22,8 @@
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
+* Stephan Grobler (stephan@7footdeveloper.co.za)
 * Other community or team contact
-=======
-simpletasktimer
-===============
 
-Simple task list with times bound to it.
+
 

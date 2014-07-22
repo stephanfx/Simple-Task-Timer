@@ -6,7 +6,7 @@
         id        = "com.phonegap.teststuff"
         version   = "0.0.3">
 
-    <name>SimpleTaskTimer</name>
+    <name>Simple Task Timer</name>
 
     <description>
         Simple Task Timer is the result of not finding what I was looking for in timing myself.
