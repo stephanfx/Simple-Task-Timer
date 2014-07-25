@@ -25,6 +25,7 @@
 	}
 	.running {
 		background: #a9e554;
+
 	}
 	.action{
 		display: inline-block;
@@ -40,10 +41,10 @@
 	}
 	</style>
 </head>
-<body ng-init="load()">
+<body>
 	<div class="container">
 
-		<div ng-controller="TaskCtrl" ng-include="'app/header.tpl.html'"></div>
+		<div ng-controller="HeaderCtrl" ng-include="'app/header.tpl.html'"></div>
 		<div ng-view></div>
 
 

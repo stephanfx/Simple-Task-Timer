@@ -1,58 +1,71 @@
-/*! simpleTask - v0.0.1 - 2014-07-22
+/*! simpleTask - v0.0.1 - 2014-07-25
  * Copyright (c) 2014 ;
  * Licensed 
  */
-angular.module('simpleTask', ['ngRoute','Reporting', 'templates-main'])
+angular.module('simpleTask', ['ngRoute', 'Reporting', 'templates-main'])
 	.config(['$routeProvider',
 		function($routeProvider) {
 			$routeProvider
-			.when('/',{ controller: 'TaskCtrl', templateUrl: 'app/tasks.tpl.html'})
-			.when('/report', {controller: 'ReportingCtrl', templateUrl: 'app/report/report.tpl.html'})
-			.otherwise('/');
+				.when('/', {
+					controller: 'TaskCtrl',
+					templateUrl: 'app/tasks.tpl.html'
+				})
+				.when('/report', {
+					controller: 'ReportingCtrl',
+					templateUrl: 'app/report/report.tpl.html'
+				})
+				.otherwise('/');
 		}
 	])
-	.controller('TaskCtrl', ['$scope', 'Tasks', '$interval',
+	.controller('HeaderCtrl', ['$scope', 'Tasks', '$interval',
 		function($scope, Tasks, $interval) {
-			Tasks.load();
-
-			$scope.tasks = Tasks.tasks;
+			$scope.task = {};
 			$scope.createTask = function(task) {
 				Tasks.createTask(task);
 				$scope.task = null;
 			};
-			$scope.startTask = function(index) {
-				Tasks.startTask(index);
-				$scope.interval = $interval(function() {
-					Tasks.runningTime(index);
-				}, 1000);
-				$scope.getWorkTimes();
-			};
-			$scope.stopTask = function(index){
-				Tasks.stopTask(index);
-				$interval.cancel($scope.interval);
-				$scope.getWorkTimes();
-			};
-			$scope.removeTask = function(index){
+			$scope.removeTask = function(index) {
 				Tasks.removeTask(index);
 			};
-			$scope.archiveTask = function(index) {
-				Tasks.archiveTask(index);
-			};
-			$scope.startBreak = function(){
-				Tasks.createTask({name: "Break", estimate: 0}, 'break');
+			$scope.startBreak = function() {
+				Tasks.createTask({
+					name: "Break",
+					estimate: 0
+				}, 'break');
 				Tasks.startTask(0);
 				Tasks.archiveTask(0);
 				$scope.breakTime = true;
 				$scope.getWorkTimes();
 			};
-			$scope.stopBreak = function(){
+			$scope.stopBreak = function() {
 				Tasks.stopTask(0);
 				$scope.breakTime = false;
 				$scope.getWorkTimes();
 			};
-			$scope.getWorkTimes = function(){
+			$scope.getWorkTimes = function() {
 				var times = Tasks.getWorkTimes();
 				$scope.worktimes = times[moment().format('YYYY-MM-DD')];
+			};
+		}
+	])
+	.controller('TaskCtrl', ['$scope', 'Tasks', '$interval',
+		function($scope, Tasks, $interval) {
+			Tasks.load();
+			$scope.tasks = Tasks.tasks;
+			$scope.startTask = function(index) {
+				Tasks.startTask(index);
+				$scope.interval = $interval(function() {
+					Tasks.runningTime(index);
+				}, 1000);
+
+			};
+			$scope.stopTask = function(index) {
+				Tasks.stopTask(index);
+				$interval.cancel($scope.interval);
+
+			};
+			$scope.archiveTask = function(index) {
+				Tasks.archiveTask(index);
 			};
 		}
 	])
@@ -68,12 +81,12 @@ angular.module('simpleTask', ['ngRoute','Reporting', 'templates-main'])
 				if (sec < 10) {
 					sec = "0" + sec;
 				}
-				return m.get('h') + ":"+ min +":"+ sec;
+				return m.get('h') + ":" + min + ":" + sec;
 			}
 		};
 	});
 
-angular.module('Tasks',[]).
+angular.module('Tasks', []).
 factory('Tasks', function() {
 	return {
 		tasks: [],
@@ -99,8 +112,8 @@ factory('Tasks', function() {
 				localStorage.setItem('tasks', JSON.stringify(this.tasks));
 			}
 		},
-		fixTimes : function(task){
-			if (typeof task.times == "undefined"){
+		fixTimes: function(task) {
+			if (typeof task.times == "undefined") {
 				task.times = [];
 				var time = {
 					start: task.start,
@@ -129,16 +142,16 @@ factory('Tasks', function() {
 			});
 			this.persist();
 		},
-		startTask : function(index) {
+		startTask: function(index) {
 			var start = moment().valueOf();
 			this.tasks[index].times.push({
 				"start": start,
-				"end" : null
+				"end": null
 			});
 			this.tasks[index].running = true;
 			this.persist();
 		},
-		runningTime: function(index){
+		runningTime: function(index) {
 			var task = this.tasks[index],
 				latest = task.times.length - 1;
 			task.runningTime = (moment().valueOf() - task.times[latest].start) + task.total;
@@ -162,7 +175,7 @@ factory('Tasks', function() {
 			this.persist();
 		},
 
-		calculateTime: function(index){
+		calculateTime: function(index) {
 			var task = this.tasks[index];
 			task.total = 0;
 			for (var x = task.times.length - 1; x >= 0; x--) {
@@ -170,7 +183,7 @@ factory('Tasks', function() {
 				task.total += task.times[x].total;
 			}
 		},
-		getWorkTimes: function(){
+		getWorkTimes: function() {
 			var workHrs = {};
 			for (var x = this.tasks.length - 1; x >= 0; x--) {
 				var task = this.tasks[x];
@@ -183,7 +196,10 @@ factory('Tasks', function() {
 							edate = moment(task.times[i].end),
 							dayFormat = sdate.format('YYYY-MM-DD');
 						if (typeof workHrs[dayFormat] == "undefined") {
-							workHrs[dayFormat] = {"work":0, "breaktime":0};
+							workHrs[dayFormat] = {
+								"work": 0,
+								"breaktime": 0
+							};
 						}
 						if (task.times[i].end !== null && task.type == "work") {
 							var total = edate.valueOf() - sdate.valueOf();
@@ -216,8 +232,10 @@ factory('Tasks', function() {
 						report[startTimeStr] = {};
 					}
 					// add task if not there yet. with a total of 0
-					if (!report[startTimeStr][task.name]){
-						report[startTimeStr][task.name]={total: 0};
+					if (!report[startTimeStr][task.name]) {
+						report[startTimeStr][task.name] = {
+							total: 0
+						};
 					}
 
 					timespent = time.end - time.start;
