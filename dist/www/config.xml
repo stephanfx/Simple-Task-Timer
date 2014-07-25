@@ -3,10 +3,10 @@
 <!-- config.xml reference: https://build.phonegap.com/docs/config-xml -->
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.7footdeveloper.simpletasktimer"
-        version   = "0.0.2">
+        id        = "com.phonegap.teststuff"
+        version   = "0.0.3">
 
-    <name>SimpleTaskTimer</name>
+    <name>Simple Task Timer</name>
 
     <description>
         Simple Task Timer is the result of not finding what I was looking for in timing myself.
