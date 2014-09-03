@@ -2,21 +2,31 @@ angular.module('templates-main', ['app/header.tpl.html', 'app/report/report.tpl.
 
 angular.module("app/header.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/header.tpl.html",
-    "<div class=\"pull-right\">\n" +
-    "	<a class=\"action\" href ng-hide=\"breakTime\" ng-click=\"startBreak()\"><span class=\"glyphicon glyphicon-cutlery\"></span></a>\n" +
-    "	<a class=\"action\" href ng-hide=\"!breakTime\" ng-class=\"{'running': breakTime}\" ng-click=\"stopBreak()\"><span class=\"glyphicon glyphicon-cutlery\"></span></a>\n" +
-    "</div>\n" +
     "<div class=\"page-header\">\n" +
     "\n" +
-    "	<h1><a href ng-click=\"settings = !settings\">		<span class=\"glyphicon glyphicon-cog\"></span></a>Simple Task Timer</h1>\n" +
+    "	<h1>\n" +
+    "		<a class=\"action no-margin\" href ng-hide=\"breakTime\" ng-click=\"startBreak()\"><span class=\"glyphicon glyphicon-cutlery\"></span></a>\n" +
+    "		<a class=\"action no-margin\" href ng-hide=\"!breakTime\" ng-class=\"{'running': breakTime}\" ng-click=\"stopBreak()\"><span class=\"glyphicon glyphicon-cutlery\"></span></a>\n" +
+    "		<a href class=\"action no-margin\" ng-click=\"settings = !settings\"><span class=\"glyphicon glyphicon-cog\"></span></a>\n" +
+    "		Simple Task Timer\n" +
+    "\n" +
+    "\n" +
+    "\n" +
+    "\n" +
+    "	</h1>\n" +
     "\n" +
     "</div>\n" +
     "<div ng-show=\"settings\">\n" +
-    "	<a href ng-click=\"getWorkTimes()\">GetTimes</a>\n" +
+    "	<ul class=\"nav nav-pills\">\n" +
+    "		<li><a href ng-click=\"getWorkTimes()\">GetTimes</a></li>\n" +
+    "		<li><a href=\"#/report\">Report</a></li>\n" +
+    "		<li><a href=\"#/\">Tasks</a></li>\n" +
+    "	</ul>\n" +
+    "\n" +
     "	Worked: {{worktimes.work | toTime}}\n" +
     "	Breaks: {{worktimes.breaktime | toTime}}\n" +
-    "	<a href=\"#/report\">Report</a>\n" +
-    "	<a href=\"#/\">Tasks</a>\n" +
+    "\n" +
+    "\n" +
     "</div>\n" +
     "\n" +
     "<form action method=\"POST\" name=\"taskForm\" class=\"form-inline\" role=\"form\" novalidate>\n" +
@@ -38,7 +48,8 @@ angular.module("app/header.tpl.html", []).run(["$templateCache", function($templ
     "			<button ng-click=\"createTask(task)\" ng-disabled=\"!taskForm.$valid\" class=\"btn btn-primary\">Submit</button>\n" +
     "		</div>\n" +
     "	</div>\n" +
-    "</form>");
+    "</form>\n" +
+    "");
 }]);
 
 angular.module("app/report/report.tpl.html", []).run(["$templateCache", function($templateCache) {
