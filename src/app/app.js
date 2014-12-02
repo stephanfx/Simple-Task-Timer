@@ -1,4 +1,4 @@
-angular.module('simpleTask', ['ngRoute', 'Reporting', 'templates-main'])
+angular.module('simpleTask', ['ngRoute', 'ngAnimate', 'Reporting', 'templates-main'])
 	.config(['$routeProvider',
 		function($routeProvider) {
 			$routeProvider

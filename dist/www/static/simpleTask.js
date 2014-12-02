@@ -1,8 +1,8 @@
-/*! simpleTask - v0.0.1 - 2014-09-03
+/*! simpleTask - v0.0.1 - 2014-12-02
  * Copyright (c) 2014 ;
  * Licensed 
  */
-angular.module('simpleTask', ['ngRoute', 'Reporting', 'templates-main'])
+angular.module('simpleTask', ['ngRoute', 'ngAnimate', 'Reporting', 'templates-main'])
 	.config(['$routeProvider',
 		function($routeProvider) {
 			$routeProvider

@@ -1,32 +1,41 @@
 
-<div class="page-header">
+<div>
+	<h1 class="text-center">
 
-	<h1>
-		<a class="action no-margin" href ng-hide="breakTime" ng-click="startBreak()"><span class="glyphicon glyphicon-cutlery"></span></a>
-		<a class="action no-margin" href ng-hide="!breakTime" ng-class="{'running': breakTime}" ng-click="stopBreak()"><span class="glyphicon glyphicon-cutlery"></span></a>
-		<a href class="action no-margin" ng-click="settings = !settings"><span class="glyphicon glyphicon-cog"></span></a>
 		Simple Task Timer
-
-
-
-
 	</h1>
 
 </div>
-<div ng-show="settings">
-	<ul class="nav nav-pills">
-		<li><a href ng-click="getWorkTimes()">GetTimes</a></li>
-		<li><a href="#/report">Report</a></li>
-		<li><a href="#/">Tasks</a></li>
-	</ul>
-
-	Worked: {{worktimes.work | toTime}}
-	Breaks: {{worktimes.breaktime | toTime}}
-
-
+<div class="row">
+	<div class="col-xs-12">
+		<div class="action-buttons text-center">
+			<ul>
+				<li>
+					<a href class="action no-margin" ng-click="settings = !settings"><i class="fa fa-bars"></i></a>
+				</li>
+				<li>
+					<a href class="action no-margin" ng-click="addTask = !addTask"><i class="fa fa-plus"></i></a>
+				</li>
+				<li>
+					<a class="action no-margin" href ng-hide="breakTime" ng-click="startBreak()"><i class="fa fa-coffee"></i></a>
+					<a class="action no-margin" href ng-hide="!breakTime" ng-class="{'running': breakTime}" ng-click="stopBreak()"><i class="fa fa-coffee"></i></a>
+				</li>
+			</ul>
+		</div>
+	</div>
 </div>
 
-<form action method="POST" name="taskForm" class="form-inline" role="form" novalidate>
+<div ng-show="settings" class="action-slide">
+	<ul class="nav nav-pills">
+		<li><a href="#/">Tasks</a></li>
+		<li><a href ng-click="getWorkTimes()">GetTimes</a></li>
+		<li><a href="#/report">Report</a></li>
+	</ul>
+	Worked: {{worktimes.work | toTime}}
+	Breaks: {{worktimes.breaktime | toTime}}
+</div>
+
+<form ng-show="addTask" action method="POST" name="taskForm" class="form-inline action-slide" role="form" novalidate>
 	<div class="form-group">
 		<label for="inputTaskName" class="sr-only">Task Name:</label>
 		<div class="">

@@ -40,10 +40,18 @@ module.exports = function(grunt) {
 				],
 				dest: '<%= pubDir %>/static/css/vendor.css'
 			},
+			appstyles: {
+				src: [
+					"src/css/index.css",
+					"src/css/app.css",
+				],
+				dest: '<%= pubDir %>/static/css/app.css'
+			},
 			angular: {
 				src: [
 					'vendor/angular/angular.js',
 					'vendor/angular-route/angular-route.js',
+					"vendor/angular-animate/angular-animate.js",
 					"vendor/moment/moment.js",
 				],
 				dest: '<%= pubDir %>/static/angular.js'
@@ -152,7 +160,7 @@ module.exports = function(grunt) {
 		},
 
 		watch: {
-			files: ['<%= jshint.files %>', 'src/**/*.html'],
+			files: ['<%= jshint.files %>', 'src/**/*.html', 'src/css/*.css'],
 			tasks: ['timestamp', 'default']
 		}
 	});
