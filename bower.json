@@ -24,6 +24,7 @@
   "dependencies": {
     "angular-route": "~1.2.16",
     "angular": "~1.2.16",
-    "moment": "~2.7.0"
+    "moment": "~2.7.0",
+    "fontawesome": "~4.2.0"
   }
 }

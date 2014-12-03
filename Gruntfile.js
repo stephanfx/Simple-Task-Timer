@@ -36,7 +36,8 @@ module.exports = function(grunt) {
 			styles: {
 				src: [
 					"vendor/bootstrap/dist/css/bootstrap.css",
-					"vendor/bootstrap/dist/css/bootstrap-theme.css"
+					"vendor/bootstrap/dist/css/bootstrap-theme.css",
+					"vendor/fontawesome/css/font-awesome.css"
 				],
 				dest: '<%= pubDir %>/static/css/vendor.css'
 			},
@@ -82,6 +83,12 @@ module.exports = function(grunt) {
 			},
 			fonts: {
 				cwd: 'vendor/bootstrap/dist/fonts/',
+				src: ["**"],
+				dest: '<%= pubDir %>/static/fonts/',
+				expand: true
+			},
+			fontawesome: {
+				cwd: 'vendor/fontawesome/fonts/',
 				src: ["**"],
 				dest: '<%= pubDir %>/static/fonts/',
 				expand: true
