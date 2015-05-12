@@ -46,8 +46,8 @@ angular.module('simpleTask', ['ngRoute', 'ngAnimate', 'Reporting', 'templates-ma
 	])
 	//comment for testing Atom.io
 	//
-	.controller('TaskCtrl', ['$scope', 'Tasks', '$interval',
-		function($scope, Tasks, $interval) {
+	.controller('TaskCtrl', ['$scope', 'Tasks', '$interval', '$filter',
+		function($scope, Tasks, $interval, $filter) {
 			Tasks.load();
 			$scope.tasks = Tasks.tasks;
 			$scope.startTask = function(index) {
@@ -64,6 +64,11 @@ angular.module('simpleTask', ['ngRoute', 'ngAnimate', 'Reporting', 'templates-ma
 			};
 			$scope.archiveTask = function(index) {
 				Tasks.archiveTask(index);
+			};
+
+			$scope.totalTime = function(time){
+				var total = time.end - time.start;
+				return $filter('toTime')(total);
 			};
 		}
 	])

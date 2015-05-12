@@ -1,12 +1,12 @@
 <h1>Reporting</h1>
 <ul class="list-unstyled">
-	<li ng-repeat="(key, result) in results | orderBy:-key">
+	<li ng-repeat="day in results | orderBy:'Date':true">
 		<div class="page-header">
-		  <h3>{{key}}</h3>
+		  <h3>{{day.Date}}</h3>
 		</div>
 		<ul class="list-unstyled">
-			<li ng-repeat="(task, time) in result">
-				 {{time.total | toTime}} - {{task}}
+			<li ng-repeat="entry in day.Entries">
+				 {{entry.total | toTime}} - {{entry.taskName}}
 			</li>
 		</ul>
 	</li>

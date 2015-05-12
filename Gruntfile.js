@@ -168,7 +168,10 @@ module.exports = function(grunt) {
 
 		watch: {
 			files: ['<%= jshint.files %>', 'src/**/*.html', 'src/css/*.css'],
-			tasks: ['timestamp', 'default']
+			tasks: ['timestamp', 'jshint', 'build'],
+			options: {
+				livereload: true
+			}
 		}
 	});
 
@@ -179,7 +182,7 @@ module.exports = function(grunt) {
 	});
 
 
-	grunt.registerTask('default', [ 'jshint', 'build']);
+	grunt.registerTask('default', [ 'watch']);
 	grunt.registerTask('build', ['clean', 'concat', 'html2js', 'copy', ]);
 	grunt.registerTask('release', [ 'clean', 'html2js', 'uglify', 'concat:index', 'concat:styles', 'copy',  'cssmin' ]);
 

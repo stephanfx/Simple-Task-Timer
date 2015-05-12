@@ -65,13 +65,13 @@ angular.module("app/report/report.tpl.html", []).run(["$templateCache", function
   $templateCache.put("app/report/report.tpl.html",
     "<h1>Reporting</h1>\n" +
     "<ul class=\"list-unstyled\">\n" +
-    "	<li ng-repeat=\"(key, result) in results | orderBy:-key\">\n" +
+    "	<li ng-repeat=\"day in results | orderBy:'Date':true\">\n" +
     "		<div class=\"page-header\">\n" +
-    "		  <h3>{{key}}</h3>\n" +
+    "		  <h3>{{day.Date}}</h3>\n" +
     "		</div>\n" +
     "		<ul class=\"list-unstyled\">\n" +
-    "			<li ng-repeat=\"(task, time) in result\">\n" +
-    "				 {{time.total | toTime}} - {{task}}\n" +
+    "			<li ng-repeat=\"entry in day.Entries\">\n" +
+    "				 {{entry.total | toTime}} - {{entry.taskName}}\n" +
     "			</li>\n" +
     "		</ul>\n" +
     "	</li>\n" +
@@ -115,9 +115,10 @@ angular.module("app/tasks.tpl.html", []).run(["$templateCache", function($templa
     "				<div class=\"row\" ng-show=\"displayTimes\">\n" +
     "					<div class=\"col-xs-12\">\n" +
     "						<ul class=\"list-unstyled\">\n" +
-    "							<li ng-repeat=\"time in task.times track by $index\">\n" +
-    "								Time Started: {{time.start | date:\"yyyy-MM-dd HH:mm:ss\"}} |\n" +
-    "								Time Ended: {{time.end | date:\"yyyy-MM-dd HH:mm:ss\"}} <br>\n" +
+    "							<li ng-repeat=\"time in task.times | orderBy: 'start' : true\" class=\"timeslot\">\n" +
+    "								{{$index}} - {{time.start | date:\"yyyy-MM-dd HH:mm:ss\"}} -\n" +
+    "								{{time.end | date:\"yyyy-MM-dd HH:mm:ss\"}} = {{time.total | toTime}}\n" +
+    "\n" +
     "							</li>\n" +
     "						</ul>\n" +
     "					</div>\n" +

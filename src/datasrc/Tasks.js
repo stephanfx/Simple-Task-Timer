@@ -127,7 +127,7 @@ factory('Tasks', function() {
 			return workHrs;
 		},
 		getDailyTimes: function() {
-			var report = {};
+			var report = [];
 			//Step through all tasks
 			for (var i = this.tasks.length - 1; i >= 0; i--) {
 				// Step through all times logged for the task
@@ -137,20 +137,30 @@ factory('Tasks', function() {
 					// determine date and see if it is in the report array
 					var startTime = moment(time.start),
 						endTime = moment(time.end),
-						startTimeStr = startTime.format('YYYY-MM-DD');
+						startTimeStr = startTime.format('YYYY-MM-DD'),
+						timespent = time.end - time.start,
+						dayExists = false;
 					// add date to report if it is not there yet.
-					if (!report.hasOwnProperty(startTimeStr)) {
-						report[startTimeStr] = {};
+					/*jshint loopfunc: true */
+					angular.forEach(report, function(day, key){
+						if(day.Date == startTimeStr){
+							var entryExists = false;
+							/*jshint loopfunc: true */
+							angular.forEach(day.Entries, function(entry, key){
+								if (entry.taskName == task.name){
+									entry.total += timespent;
+									entryExists = true;
+								}
+							});
+							if (!entryExists) {
+								day.Entries.push({"taskName":task.name, total: timespent});
+							}
+							dayExists = true;
+						}
+					});
+					if (!dayExists){
+						report.push({"Date":startTimeStr, Entries: [{"taskName":task.name, total: timespent}]});
 					}
-					// add task if not there yet. with a total of 0
-					if (!report[startTimeStr][task.name]) {
-						report[startTimeStr][task.name] = {
-							total: 0
-						};
-					}
-
-					timespent = time.end - time.start;
-					report[startTimeStr][task.name].total = report[startTimeStr][task.name].total + timespent;
 				}
 			}
 			return report;

@@ -86,3 +86,8 @@ body {
     -webkit-animation:fade 3000ms infinite;
 }
 
+.timeslot {
+    padding-left: 20px;
+    margin-bottom: 5px;
+}
+
