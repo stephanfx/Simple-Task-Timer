@@ -116,7 +116,7 @@ angular.module("app/tasks.tpl.html", []).run(["$templateCache", function($templa
     "					<div class=\"col-xs-12\">\n" +
     "						<ul class=\"list-unstyled\">\n" +
     "							<li ng-repeat=\"time in task.times | orderBy: 'start' : true\" class=\"timeslot\">\n" +
-    "								{{$index}} - {{time.start | date:\"yyyy-MM-dd HH:mm:ss\"}} -\n" +
+    "								{{time.start | date:\"yyyy-MM-dd HH:mm:ss\"}} -\n" +
     "								{{time.end | date:\"yyyy-MM-dd HH:mm:ss\"}} = {{time.total | toTime}}\n" +
     "\n" +
     "							</li>\n" +
