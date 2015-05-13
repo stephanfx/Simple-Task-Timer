@@ -67,7 +67,7 @@ angular.module("app/report/report.tpl.html", []).run(["$templateCache", function
     "<ul class=\"list-unstyled\">\n" +
     "	<li ng-repeat=\"day in results | orderBy:'Date':true\">\n" +
     "		<div class=\"page-header\">\n" +
-    "		  <h3>{{day.Date}}</h3>\n" +
+    "		  <h3>{{day.Date}} <span class=\"small-heading\">{{day.TotalTime | toTime}}</span></h3>\n" +
     "		</div>\n" +
     "		<ul class=\"list-unstyled\">\n" +
     "			<li ng-repeat=\"entry in day.Entries\">\n" +
@@ -115,10 +115,11 @@ angular.module("app/tasks.tpl.html", []).run(["$templateCache", function($templa
     "				<div class=\"row\" ng-show=\"displayTimes\">\n" +
     "					<div class=\"col-xs-12\">\n" +
     "						<ul class=\"list-unstyled\">\n" +
-    "							<li ng-repeat=\"time in task.times | orderBy: 'start' : true\" class=\"timeslot\">\n" +
-    "								{{time.start | date:\"yyyy-MM-dd HH:mm:ss\"}} -\n" +
-    "								{{time.end | date:\"yyyy-MM-dd HH:mm:ss\"}} = {{time.total | toTime}}\n" +
+    "							<li ng-repeat=\"time in task.times track by $index | orderBy: 'start' : true\" class=\"timeslot\">\n" +
     "\n" +
+    "								<input ng-model=\"time.start\" ng-change=\"updateTime(time, task)\"> ->\n" +
+    "								<input ng-model=\"time.end\" ng-change=\"updateTime(time, task)\"> =\n" +
+    "								{{time.total | toTime}}\n" +
     "							</li>\n" +
     "						</ul>\n" +
     "					</div>\n" +

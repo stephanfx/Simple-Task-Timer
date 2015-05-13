@@ -32,10 +32,11 @@
 				<div class="row" ng-show="displayTimes">
 					<div class="col-xs-12">
 						<ul class="list-unstyled">
-							<li ng-repeat="time in task.times | orderBy: 'start' : true" class="timeslot">
-								{{time.start | date:"yyyy-MM-dd HH:mm:ss"}} -
-								{{time.end | date:"yyyy-MM-dd HH:mm:ss"}} = {{time.total | toTime}}
+							<li ng-repeat="time in task.times track by $index | orderBy: 'start' : true" class="timeslot">
 
+								<input ng-model="time.start" ng-change="updateTime(time, task)"> ->
+								<input ng-model="time.end" ng-change="updateTime(time, task)"> =
+								{{time.total | toTime}}
 							</li>
 						</ul>
 					</div>

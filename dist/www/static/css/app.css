@@ -91,6 +91,11 @@ body {
     margin-bottom: 5px;
 }
 
+.small-heading {
+    font-size: 80%;
+    color: #aaa;
+}
+
 
 body {
 	font-family: 'Roboto', sans-serif;

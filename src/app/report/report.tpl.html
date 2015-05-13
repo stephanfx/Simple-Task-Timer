@@ -2,7 +2,7 @@
 <ul class="list-unstyled">
 	<li ng-repeat="day in results | orderBy:'Date':true">
 		<div class="page-header">
-		  <h3>{{day.Date}}</h3>
+		  <h3>{{day.Date}} <span class="small-heading">{{day.TotalTime | toTime}}</span></h3>
 		</div>
 		<ul class="list-unstyled">
 			<li ng-repeat="entry in day.Entries">

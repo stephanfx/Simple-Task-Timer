@@ -70,21 +70,45 @@ angular.module('simpleTask', ['ngRoute', 'ngAnimate', 'Reporting', 'templates-ma
 				var total = time.end - time.start;
 				return $filter('toTime')(total);
 			};
+
+			$scope.updateTime = function(time, task){
+				if (time.start > time.end){
+					return false;
+				}
+				time.total = moment(time.end).diff(moment(time.start));
+				task.total = 0;
+				for (var x = task.times.length - 1; x >= 0; x--) {
+					task.times[x].total = moment(task.times[x].end).diff(moment(task.times[x].start));
+					task.total += task.times[x].total;
+				}
+				Tasks.persist();
+			};
 		}
 	])
 	.filter('toTime', function() {
 		return function(input) {
 			if (typeof input !== "undefined") {
 				var m = moment.duration(input),
-					min = m.get('m'),
-					sec = m.get('s');
+					day = parseInt(m.get('d')),
+					dayHrs = 0,
+					hrs = parseInt(m.get('h')),
+					min = parseInt(m.get('m')),
+					sec = parseInt(m.get('s'));
+				if (day > 0) {
+					dayHrs = parseInt(day * 24);
+					hrs += dayHrs;
+				}
 				if (min < 10) {
 					min = "0" + min;
 				}
 				if (sec < 10) {
 					sec = "0" + sec;
 				}
-				return m.get('h') + ":" + min + ":" + sec;
+				if (hrs < 10) {
+					hrs =  "0" + hrs;
+				}
+
+				return hrs + ":" + min + ":" + sec;
 			}
 		};
 	});
